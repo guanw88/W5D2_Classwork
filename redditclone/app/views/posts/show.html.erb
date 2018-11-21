@@ -1,0 +1,38 @@
+<h1> <%= @post.title %> </h1>
+
+<p>URL: <%= @post.url %> </p>
+
+<p>Content: <%= @post.content%></p>
+
+<p>Subs Cross-posted At:<br/>
+  <% @post.subs.each do |sub| %>
+    <%= sub.title %><br/>
+  <% end %>
+</p>
+
+<p>Author: <%= @post.author.username%></p>
+
+<%= render 'layouts/errors' %><br>
+<a href="<%= edit_post_url(@post) %>">Edit Post</a>
+
+<form action="<%= post_url(@post) %>" method="post">
+  <%= auth_token %>
+  <%= form_delete_hidden_input %>
+  <input type="submit" name="" value="Delete Post">
+</form>
+
+<h2>Comments</h2>
+
+
+<%# @post.comments.where(parent_comment_id: nil).each do |comment| %>
+  <%#= render 'layouts/comment', comment: comment %>
+<%# end %>
+
+
+<% @all_comments.each do |comment| %>
+  <% if comment.parent_comment_id.nil? %>
+    <%= render 'layouts/comment', comment: comment %>
+  <% end %>
+<% end %>
+
+<a href="<%= new_post_comment_url(@post) %>">Add Comment</a>
